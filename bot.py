@@ -24,7 +24,8 @@ exchange = ccxt.bitget({
     'enableRateLimit': True,
     'options': {'defaultType': 'swap'}
 })
-
+exchange.set_sandbox_mode(True)   # This switches to paper trading
+print("🧪 RUNNING IN PAPER TRADING MODE (Testnet)")
 ny_tz = pytz.timezone('America/New_York')
 print("✅ HyperScalper v1 started - DRY_RUN =", DRY_RUN)
 
