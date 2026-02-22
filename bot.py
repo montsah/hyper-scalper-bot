@@ -41,7 +41,9 @@ active_trades = {}  # track open positions
 
 while True:
     now = datetime.now(ny_tz)
-    
+        # === Print balance every loop so we can see it ===
+    if now.minute % 2 == 0:        # prints every 2 minutes
+        get_usdt_balance()
     # Clean expired trades
     for symbol in list(active_trades.keys()):
         if (now - active_trades[symbol]['entry_time']).total_seconds() / 60 > MAX_HOLD_MINUTES:
