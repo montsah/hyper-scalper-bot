@@ -75,19 +75,23 @@ while True:
             
             atr = (df5['h'] - df5['l']).rolling(14).mean().iloc[-1]
             
-                            # === LONG ENTRY ===
-if long_bias and current_price > ema8 and rsi > 48 and ... :   # your existing conditions
-    balance = get_usdt_balance()
-    risk_amount = balance * (RISK_PERCENT / 100)          # 3% of current balance
-    sl_distance = ATR_MULTIPLIER_SL * atr
-    position_size = risk_amount / sl_distance             # in coin quantity
-    
-    print(f"🚀 HYPER LONG {symbol} @ {current_price:.4f} | Risk ${risk_amount:.2f} (3%) | Size {position_size:.6f} coins")
-    
-    if not DRY_RUN:
-        # Real order code goes here later
-        pass
-                        # === SHORT ENTRY ===
+                                       # === LONG ENTRY ===
+            if long_bias and current_price > ema8 and rsi > 48 and df5['v'].iloc[-1] > vol_avg * 1.25 and adx > 18:
+                balance = get_usdt_balance()
+                risk_amount = balance * (RISK_PERCENT / 100)          # 3% of current balance
+                
+                sl_distance = ATR_MULTIPLIER_SL * atr
+                position_size = risk_amount / sl_distance             # in coin quantity
+                
+                sl = current_price - sl_distance
+                tp = current_price + (sl_distance * RR)
+                
+                print(f"🚀 HYPER LONG {symbol} @ {current_price:.4f} | Risk ${risk_amount:.2f} (3%) | Size {position_size:.6f} coins")
+                
+                if not DRY_RUN:
+                    # Real order code goes here later
+                    pass
+                                    # === SHORT ENTRY ===
             elif not long_bias and current_price < ema8 and rsi < 52 and df5['v'].iloc[-1] > vol_avg * 1.25 and adx > 18:
                 balance = get_usdt_balance()
                 risk_amount = balance * (RISK_PERCENT / 100)          # 3% of current balance
@@ -96,12 +100,12 @@ if long_bias and current_price > ema8 and rsi > 48 and ... :   # your existing c
                 position_size = risk_amount / sl_distance             # in coin quantity
                 
                 sl = current_price + sl_distance
-                tp = current_price - (sl - current_price) * RR
+                tp = current_price - (sl_distance * RR)
                 
                 print(f"🔻 HYPER SHORT {symbol} @ {current_price:.4f} | Risk ${risk_amount:.2f} (3%) | Size {position_size:.6f} coins")
                 
                 if not DRY_RUN:
-                    # Real order code goes here later when going live
+                    # Real order code goes here later
                     pass
                    
         except:
